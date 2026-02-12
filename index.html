@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Maker Lab v2.0</title>
+    <!-- Fabric.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="no-print">
+            <h1>🧬 Monster Maker Lab 🧬</h1>
+            <p class="subtitle">Assemble. Incubate. Observe.</p>
+        </header>
+
+        <main>
+            <!-- LEFT COLUMN: THE LAB TANK (Canvas) -->
+            <section class="lab-station">
+                <div class="monitor-frame">
+                    <div class="screen-glare"></div>
+                    <canvas id="monsterCanvas"></canvas>
+                    <div id="debugLog"
+                        style="position:absolute; bottom:10px; left:10px; color:#0f0; background:rgba(0,0,0,0.8); padding:5px; font-family:monospace; display:none; pointer-events:none; z-index:100;">
+                    </div>
+                </div>
+
+                <div class="controls-bar no-print">
+                    <div class="history-controls">
+                        <button id="btnUndo" class="control-btn mini" title="Undo" disabled>↩️</button>
+                        <button id="btnRedo" class="control-btn mini" title="Redo" disabled>↪️</button>
+                    </div>
+                    <button id="btnSelect" class="control-btn active" title="Move/Resize Parts">✋ Move</button>
+                    <button id="btnDraw" class="control-btn" title="Freehand Draw">✏️ Draw</button>
+                    <input type="color" id="colorPicker" value="#000000" title="Brush Color">
+                    <button id="btnClear" class="control-btn danger" title="Reset Canvas">🗑️ Clear</button>
+                    <button id="btnDownload" class="control-btn action" title="Save Image">📸 Snap</button>
+                </div>
+            </section>
+
+            <!-- RIGHT COLUMN: INVENTORY & DATA -->
+            <section class="data-station no-print">
+
+                <!-- TABS -->
+                <div class="inventory-tabs">
+                    <button class="tab-btn active" data-category="bodies">Bodies</button>
+                    <button class="tab-btn" data-category="eyes">Eyes</button>
+                    <button class="tab-btn" data-category="mouths">Mouths</button>
+                    <button class="tab-btn" data-category="accessories">Extras</button>
+                </div>
+
+                <!-- ASSET GRID -->
+                <div class="inventory-grid" id="assetGrid">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- SUFFIX MACHINE -->
+                <div class="machine-panel">
+                    <h2>⚠️ Suffix Incubator</h2>
+                    <div class="input-row">
+                        <input type="text" id="adjInput" placeholder="Enter Adjective (e.g. Happy)">
+                        <button id="btnIncubate">⚡ INCUBATE</button>
+                    </div>
+                    <div class="machine-display">
+                        <span id="machineOutput">READY...</span>
+                    </div>
+                </div>
+
+                <!-- FIELD OBSERVATION -->
+                <div class="observation-panel">
+                    <h2>📝 Field Notes</h2>
+                    <div class="form-row">
+                        <input type="text" id="advInput" placeholder="Adverb (e.g. silently)">
+                        <input type="text" id="prepInput" placeholder="Preposition (e.g. in the dark)">
+                    </div>
+                    <div class="sentence-output">
+                        The <span id="outAdj" class="highlight">_____</span> beast waits
+                        <span id="outAdv" class="highlight">_____</span>
+                        <span id="outPrep" class="highlight">_____</span>
+                        to show its <span id="outNoun" class="result">_____</span>.
+                    </div>
+                    <button class="print-btn" onclick="window.print()">🖨️ Print Specimen</button>
+                </div>
+
+            </section>
+
+            <!-- PRINTABLE ONLY SECTION -->
+            <section class="print-only">
+                <h1>Specimen Analysis Log</h1>
+                <div class="print-layout">
+                    <div class="print-image-container">
+                        <!-- Canvas image will be copied here for print -->
+                        <img id="printSnapshot" src="" alt="Monster Specimen">
+                    </div>
+                    <div class="print-data">
+                        <div class="data-row">
+                            <strong>Subject Name:</strong> <span id="printNoun">________________</span>
+                        </div>
+                        <div class="data-row">
+                            <strong>Base DNA:</strong> <span id="printAdj">________________</span> + ness
+                        </div>
+                        <div class="print-sentence">
+                            "The <span id="printAdj2">_______</span> beast waits <span id="printAdv">_______</span>
+                            <span id="printPrep">_______</span> to show its <span id="printNoun2">_______</span>."
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        <!-- HELP / SHARE MODAL -->
+        <div id="helpModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="close-modal" id="btnCloseModal">&times;</button>
+                <h2>📸 Specimen Captured!</h2>
+                <div class="modal-body">
+                    <img id="modalImage" src="" alt="Monster Preview">
+                    <div class="instructions">
+                        <h3>How to Save & Post:</h3>
+                        <ol>
+                            <li><strong>iPad:</strong> Long-press the image above and select <em>"Add to Photos"</em>.
+                            </li>
+                            <li><strong>Seesaw:</strong> Open Seesaw app, tap <strong>+ Add</strong>, select
+                                <strong>Upload</strong>, and choose your monster from Photos.
+                            </li>
+                            <li><strong>PC/Mac:</strong> Right-click the image and select <em>"Save Image As..."</em>.
+                            </li>
+                        </ol>
+                        <p class="tip">💡 <em>Tip: If the "Share" button didn't work, this is the best way!</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/assets_encoded.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
