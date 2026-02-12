@@ -1,0 +1,541 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Fredoka:wght@400;600&family=Special+Elite&family=VT323&display=swap');
+
+/* --- RESET & BASE --- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    font-family: 'Fredoka', sans-serif;
+    color: #e0e0e0;
+    overflow-x: hidden;
+}
+
+.app-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* --- HEADER --- */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-family: 'Creepster', cursive;
+    font-size: 3.5rem;
+    color: #00e676;
+    /* Neon Green */
+    text-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+    margin: 0;
+}
+
+.subtitle {
+    font-family: 'Special Elite', cursive;
+    color: #b0bec5;
+    font-size: 1.2rem;
+    margin-top: 5px;
+}
+
+/* --- LAYOUT --- */
+main {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* --- LAB STATION (LEFT) --- */
+.lab-station {
+    flex: 1;
+    min-width: 500px;
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.monitor-frame {
+    background: #263238;
+    padding: 15px;
+    border-radius: 20px;
+    border: 5px solid #37474f;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+    position: relative;
+}
+
+/* Canvas background removed - Fabric.js handles its own canvas styling */
+
+.controls-bar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    background: #263238;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #37474f;
+}
+
+.control-btn {
+    background: #455a64;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Special Elite';
+    transition: all 0.2s;
+}
+
+.control-btn:hover {
+    background: #546e7a;
+}
+
+.control-btn.active {
+    background: #00e676;
+    color: #000;
+    font-weight: bold;
+    box-shadow: 0 0 10px #00e676;
+}
+
+.control-btn.danger {
+    background: #ef5350;
+}
+
+.control-btn.action {
+    background: #29b6f6;
+    color: #000;
+}
+
+input[type="color"] {
+    height: 40px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+/* --- DATA STATION (RIGHT) --- */
+.data-station {
+    flex: 1;
+    min-width: 400px;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Tabs */
+.inventory-tabs {
+    display: flex;
+    gap: 5px;
+}
+
+.tab-btn {
+    flex: 1;
+    background: #37474f;
+    border: none;
+    color: #b0bec5;
+    padding: 10px;
+    cursor: pointer;
+    font-family: 'Special Elite';
+    border-radius: 5px 5px 0 0;
+    transition: background 0.2s;
+}
+
+.tab-btn.active {
+    background: #00e676;
+    color: #000;
+    font-weight: bold;
+}
+
+/* Grid */
+.inventory-grid {
+    background: #263238;
+    border-top: 5px solid #00e676;
+    border-radius: 0 0 10px 10px;
+    height: 250px;
+    overflow-y: auto;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 15px;
+}
+
+.asset-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 5px;
+    cursor: grab;
+    transition: transform 0.2s, border-color 0.2s;
+    border: 3px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    aspect-ratio: 1;
+    min-height: 80px;
+}
+
+.asset-item:hover {
+    transform: scale(1.05);
+    border-color: #29b6f6;
+    z-index: 10;
+}
+
+.asset-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* The Fix */
+    pointer-events: none;
+    /* Let clicks pass to div, but drag needs img? No, drag div. */
+}
+
+/* Machine */
+.machine-panel {
+    background: #212121;
+    border: 2px solid #ff4081;
+    /* Neon Pink */
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.machine-panel::before {
+    content: "WARNING: HIGH VOLTAGE";
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 0.6rem;
+    color: #ff4081;
+    opacity: 0.7;
+}
+
+.machine-panel h2 {
+    margin-top: 0;
+    color: #ff4081;
+    font-family: 'Special Elite';
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Fredoka';
+    font-size: 1.1rem;
+}
+
+#btnIncubate {
+    background: #ff4081;
+    color: white;
+    border: none;
+    padding: 0 20px;
+    font-family: 'Creepster';
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+#btnIncubate:active {
+    transform: scale(0.95);
+}
+
+.machine-display {
+    background: #000;
+    color: #00e676;
+    font-family: 'VT323', monospace;
+    font-size: 2rem;
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid #333;
+    text-shadow: 0 0 5px #00e676;
+    min-height: 50px;
+}
+
+/* Observation */
+.observation-panel {
+    background: #eceff1;
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 10px solid #29b6f6;
+}
+
+.observation-panel h2 {
+    margin-top: 0;
+    font-family: 'Special Elite';
+    color: #263238;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.sentence-output {
+    font-family: 'Special Elite';
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.highlight {
+    color: #0277bd;
+    border-bottom: 2px solid #b3e5fc;
+}
+
+.result {
+    color: #d81b60;
+    font-weight: bold;
+    font-family: 'VT323', monospace;
+    font-size: 1.5rem;
+}
+
+.print-btn {
+    width: 100%;
+    padding: 15px;
+    background: #263238;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Special Elite';
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.print-btn:hover {
+    background: #37474f;
+}
+
+/* --- PRINT MEDIA --- */
+.print-only {
+    display: none;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+
+    .app-container {
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .print-only {
+        display: block;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .print-only h1 {
+        color: #000;
+        text-shadow: none;
+        font-family: 'Special Elite';
+        border-bottom: 3px solid #000;
+        margin-bottom: 20px;
+    }
+
+    .print-layout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .print-image-container img {
+        max-width: 100%;
+        max-height: 400px;
+        border: 2px solid #000;
+    }
+
+    .print-data {
+        width: 100%;
+        text-align: left;
+        font-family: 'Special Elite';
+        font-size: 1.5rem;
+    }
+
+    .data-row {
+        margin-bottom: 15px;
+        border-bottom: 1px dotted #999;
+        padding-bottom: 5px;
+    }
+
+    .print-sentence {
+        margin-top: 30px;
+        font-size: 1.2rem;
+        line-height: 1.8;
+        border: 2px solid #000;
+        padding: 15px;
+        border-radius: 10px;
+    }
+}/* --- MODAL STYLES --- */
+.modal-overlay {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #212121;
+    border: 3px solid #00e676;
+    /* Neon Green */
+    border-radius: 15px;
+    padding: 20px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 30px rgba(0, 230, 118, 0.3);
+    color: #fff;
+    text-align: center;
+    animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #ff4081;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #ff4081;
+}
+
+.modal-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 2px solid #333;
+    margin-bottom: 20px;
+}
+
+.instructions {
+    text-align: left;
+    background: #333;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.instructions h3 {
+    margin-top: 0;
+    color: #00e676;
+}
+
+.instructions ol {
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.instructions li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.tip {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-top: 10px;
+    font-style: italic;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+}
+
+/* --- UNDO / REDO BUTTONS --- */
+.history-controls {
+    display: flex;
+    gap: 10px;
+    margin-right: 15px;
+    border-right: 1px solid #444;
+    padding-right: 15px;
+}
+
+.control-btn.mini {
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    min-width: 40px;
+}
+
+.control-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    filter: grayscale(1);
+    box-shadow: none;
+}@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
